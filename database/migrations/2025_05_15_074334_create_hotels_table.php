@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id()->unique();
             $table->string('name');
             $table->text('building_id');
+            $table->text('logo');
             $table->timestamps();
         });
     }

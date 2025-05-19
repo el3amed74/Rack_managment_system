@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->text('building_r_id');
             $table->text('switch_id');
-            $table->integer('product_panal');
-            $table->integer('product_serial')->unique();
-            $table->integer('product_mac')->unique();
-            $table->integer('product_model');
-            $table->integer('product_port');
+            $table->string('product_panal');
+            $table->string('product_serial')->unique();
+            $table->string('product_mac')->unique();
+            $table->string('product_model');
+            $table->string('product_port');
             $table->text('device_name');
             $table->text('site_name');
             $table->timestamps();

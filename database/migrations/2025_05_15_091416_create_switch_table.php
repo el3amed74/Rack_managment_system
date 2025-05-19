@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('switch', function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->integer("serial_number")->unique();
-            $table->integer("mac_add")->unique();
-            $table->integer("ip_add")->unique();
-            $table->integer("up_link_core1")->unique();
-            $table->integer("up_link_core2")->unique();
+            $table->string("serial_number")->unique();
+            $table->string("mac_add")->unique();
+            $table->string("ip_add")->unique();
+            $table->string("up_link_core1")->unique();
+            $table->string("up_link_core2")->unique();
             $table->integer("port_number");
             $table->string("model");
             $table->timestamps();
