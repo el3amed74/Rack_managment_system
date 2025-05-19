@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\switches;
 use Illuminate\Database\Eloquent\Model;
 
-class rack_info extends Model
+class Rack_info extends Model
 {
+    protected $table = 'rack_info';
     protected $fillable = [
         'building_r_id',
         'switch_id',
@@ -17,4 +19,8 @@ class rack_info extends Model
         'device_name',
         'site_name',
     ];
+    public function switch()
+    {
+        return $this->belongsTo(switches::class, 'id');
+    }
 }
