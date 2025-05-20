@@ -5,7 +5,11 @@
     <meta charset="UTF-8" />
     <title>Our Clients</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link rel="icon" type="image/png" href="{{ asset('images/tap-icon.svg') }}">
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -76,6 +80,7 @@
             height: auto;
             object-fit: contain;
         }
+
         .header-text {
             text-align: left;
             position: absolute;
@@ -94,32 +99,61 @@
 </head>
 
 <body>
+    @auth
+        @if (Auth::user()->role_id === 'admin')
+            {{-- header --}}
+            <div class="container position-relative bg-white rounded shadow" style="min-height: 120px;">
+                <div class="header-text">
+                    <p class="welcome-message mb-1">
+                        Welcome back, {{ Auth::user()->name ?? 'User' }}
+                    </p>
+                    <p class="hotel-name">
+                        Role: {{ Auth::user()->role_id ?? 'User' }}
+                    </p>
+                </div>
 
-    <div class="container">
-        <div class="header-text">
-            <div class="welcome-message">Welcome Back {{ Auth::user()->name ?? 'User' }}</div>
-        </div>
-        <div class="header-row">
-            <h2>Our Clients</h2>
-            <div>
-                <a href="{{ route('hotels.create') }}" class="btn-dark">+ Add Hotel</a>
-                <img src="{{ asset('images/hotels/filter.png') }}" alt="Filter" title="Filter" class="filter-icon" />
-            </div>
-        </div>
-
-        <div class="grid">
-            @if($hotels->count())
-                @foreach ($hotels as $hotel)
-                    <a href="{{ url('hotels/' . $hotel->id . '/buildings') }}">
-                        <img src="{{ asset($hotel->logo) }}" alt="{{ $hotel->name }}" />
+                <div class="d-flex position-absolute" style="top: 20px; right: 40px; gap: 15px;">
+                    <a href="{{ route('hotels.create') }}"
+                        class="btn-dark text-white px-4 py-2 rounded hover:bg-gray-700 transition">
+                        + Add Hotel
                     </a>
-                @endforeach
-            @else
-                <p>No hotels found.</p>
-            @endif
-        </div>
+                    <a href="{{ route('adduser') }}" class="btn btn-dark fw-semibold px-4 py-2 rounded">
+                        + Add User
+                    </a>
+                    <a href="{{ route('logOut') }}" class="btn btn-dark fw-semibold px-4 py-2 rounded">
+                        logout
+                    </a>
+                </div>
+            </div>
+            <div class="container mx-auto px-4 py-6">
 
-    </div>
+                {{-- Title --}}
+                <div class="mb-4">
+                    <h2 class="text-xl font-bold text-gray-700">Our Clients</h2>
+                </div>
+
+                {{-- Hotel Grid --}}
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    @if ($hotels->count())
+                        @foreach ($hotels as $hotel)
+                            <a href="{{ url('hotels/' . $hotel->id . '/buildings') }}"
+                                class="block border rounded shadow hover:shadow-md transition">
+                                <img src="{{ asset($hotel->logo) }}" alt="{{ $hotel->name }}"
+                                    class="w-full h-32 object-contain p-2 bg-white" />
+                            </a>
+                        @endforeach
+                    @else
+                        <p class="text-gray-500 col-span-full">No hotels found.</p>
+                    @endif
+                </div>
+            </div>
+        @else
+            <div class="container d-flex justify-content-center align-items-center min-vh-100">
+                <h1 class="text-center">Access denied, you have no permission</h1>
+            </div>
+
+        @endif
+    @endauth
 
 </body>
 

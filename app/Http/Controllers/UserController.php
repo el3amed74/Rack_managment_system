@@ -11,6 +11,8 @@ use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
+
+
     public function login(Request $request)
     {
         $inputFields = $request->validate([
@@ -18,16 +20,14 @@ class UserController extends Controller
             'password' => 'required',
         ]);
         if (auth()->attempt(['email' => $inputFields['email'], 'password' => $inputFields['password']])) {
-            // $request->session()->regenerate();
-            return redirect('/hotels');
-            // return view('index.hotels');
-            
-            // $user = auth()->user();
-            // if ($user->roles->role === 'admin') {
-            //     return redirect('register');
-            // } elseif ($user->roles->role === 'user') {
-            //     return redirect('index');
-            // }
+            $request->session()->regenerate();
+            $user = auth()->user();
+            if ($user->role_id === 'admin') {
+                // return view('index.hotels');
+                return redirect()->route('hotels.index');
+            } else {
+                return redirect("/hotels/{$user->hotel_id}/buildings");
+            }
 
         } else {
             return back()->withErrors([
@@ -37,6 +37,12 @@ class UserController extends Controller
         }
 
     }
+
+    public function logout() {
+        auth()->logout();
+        return view('login');
+    }
+
     public function Registeration(Request $request)
     {
         // validate inputs value
@@ -49,7 +55,10 @@ class UserController extends Controller
         $inputFields['password'] = bcrypt($inputFields['password']);
         //add user to db
         $user = User::create($inputFields);
-
-        return redirect('/');
+        return back()->withErrors([
+            'usercreated' => 'user created successfully!!!',
+        ])->withInput();
+        // return redirect()->route('adduser');
+        
     }
 }
