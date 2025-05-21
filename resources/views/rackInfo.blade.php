@@ -37,15 +37,21 @@
 
     <div class="container table-container">
         <div class="container bg-primary text-white p-3 rounded">
-            <h1 class="text-center">HotelName - BuildingName </h1>
+            <h1 class="text-center">{{$hotel->name}} - BuildingName </h1>
         </div>
 
-
-
+        @if ($hotel->logo)
+                    <div class="logo-container mb-4">
+                        <img src="{{ asset($hotel->logo) }}" alt="Hotel Logo" class="hotel-logo">
+                    </div>
+                @endif
+        @if($rackinfo->count())
         <!-- Product & Device Info Table -->
         <div class="container table-container">
+            
             <h4>Product & Device Info</h4>
             <div class="table-responsive">
+                
                 <table class="table table-bordered table-striped table-hover table-sm align-middle text-center">
                     <thead>
                         <tr>
@@ -75,6 +81,7 @@
                     </tbody>
                 </table>
             </div>
+            
 
             <!-- Network & Switch Info Table -->
             <h4>Network & Switch Info</h4>
@@ -106,6 +113,9 @@
                     </tbody>
                 </table>
             </div>
+            @else
+                <p class="text-gray-500 col-span-full">No Racks found.</p>
+            @endif
         </div>
     </div>
 
