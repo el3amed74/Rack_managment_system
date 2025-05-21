@@ -138,7 +138,7 @@
                 </div>
 
                 <div class="d-flex position-absolute" style="top: 20px; right: 40px; gap: 15px;">
-                    <a href="{{ url('hotels/' . $hotel->id . '/buildings/create') }}" class="btn btn-dark fw-semibold">
+                    <a href="{{route('addbuilding',['id'=>$hotel->id]) }}" class="btn btn-dark fw-semibold">
                         + Add Building
                     </a>
                     <a href="{{ route('adduser') }}" class="btn btn-dark fw-semibold px-4 py-2 rounded">
@@ -169,10 +169,15 @@
 
                     {{-- Buildings Grid --}}
                     <div class="building-grid mt-4">
-                        @forelse($hotel->buildings as $building)
-                            <div class="building-box">
-                                Building {{ $building->building_r_id ?? $building->id }}
-                            </div>
+                        @php
+                            $uniqueBuildings = $hotel->buildings->unique('building_name');
+                        @endphp
+
+                        @forelse($uniqueBuildings as $building)
+                            <a href="{{ route('racks', ['hotel_id' => $hotel->id,'name' => $building->building_name]) }}"
+                                class="building-box text-decoration-none">
+                                Building {{ $building->building_name ?? $building->id }}, {{$hotel->id}}
+                            </a>
                         @empty
                             <p class="text-center w-100">No buildings found for this hotel.</p>
                         @endforelse
@@ -192,11 +197,11 @@
                 </div>
                 <div class="d-flex position-absolute" style="top: 20px; right: 40px; gap: 15px;">
 
-                        <a href="{{ route('logOut') }}" class="btn btn-dark fw-semibold px-4 py-2 rounded">
-                            logout
-                        </a>
+                    <a href="{{ route('logOut') }}" class="btn btn-dark fw-semibold px-4 py-2 rounded">
+                        logout
+                    </a>
 
-                    </div>
+                </div>
 
             </div>
 
@@ -217,9 +222,10 @@
                     {{-- Buildings Grid --}}
                     <div class="building-grid mt-4">
                         @forelse($hotel->buildings as $building)
-                            <div class="building-box">
-                                Building {{ $building->building_r_id ?? $building->id }}
-                            </div>
+                            <a href="{{ route('racks', ['hotel_id' => $hotel->id,'name' => $building->building_name]) }}"
+                                class="building-box text-decoration-none">
+                                Building {{ $building->building_name ?? $building->id }}, {{$hotel->id}}
+                            </a>
                         @empty
                             <p class="text-center w-100">No buildings found for this hotel.</p>
                         @endforelse
