@@ -40,7 +40,8 @@ class UserController extends Controller
 
     public function logout() {
         auth()->logout();
-        return view('login');
+        // return view('login');
+        return redirect()->route('login');
     }
 
     public function Registeration(Request $request)

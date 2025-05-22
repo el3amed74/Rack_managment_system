@@ -36,12 +36,10 @@
 <body>
 
     <div class="container table-container">
-        <div class="container bg-primary text-white p-3 rounded">
-            <h1 class="text-center">{{$hotel->name}} - BuildingName </h1>
-        </div>
+        
 
         @if ($hotel->logo)
-                    <div class="logo-container mb-4">
+                    <div class="logo-container mb-4 ">
                         <img src="{{ asset($hotel->logo) }}" alt="Hotel Logo" class="hotel-logo">
                     </div>
                 @endif

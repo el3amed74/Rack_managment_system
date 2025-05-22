@@ -77,37 +77,67 @@
 </head>
 
 <body>
+    @auth
+        @if (Auth::user()->role_id === 'admin')
+            <div class="container text-center">
+                <!-- Left-aligned text block -->
+                <div class="text-start mb-3">
+                    <h4 class="mb-1">Welcome Back {{ Auth::user()->name ?? 'User' }}</h4>
+                    <h5 class="fw-bold">{{ $building->building_name }}</h5>
+                    <div class="breadcrumb-text">/Buildings > {{ $building->building_name }}</div>
+                </div>
+                <!-- Centered logo -->
+                <img src="{{ asset($hotel->logo) }}" alt="{{ $hotel->name }}" class="logo">
+                <a href="{{ route('addrack', ['hotel_id' => $hotel->id]) }}" class="btn btn-dark fw-semibold">
+                    + Add Rack
+                </a>
+                <a href="{{ route('addswitch', ['hotel_id' => $hotel->id]) }}" class="btn btn-dark fw-semibold">
+                    + Add Switch
+                </a>
+                <!-- Centered rack boxes -->
+                <div class="rack-container mt-4">
 
-    <div class="container text-center">
-        <!-- Left-aligned text block -->
-        <div class="text-start mb-3">
-            <h4 class="mb-1">Welcome Back {{ Auth::user()->name ?? 'User' }}</h4>
-            <h5 class="fw-bold">{{ $building->building_name }}</h5>
-            <div class="breadcrumb-text">/Buildings > {{ $building->building_name }}</div>
-        </div>
-        <!-- Centered logo -->
-        <img src="{{ asset($hotel->logo) }}" alt="{{ $hotel->name }}" class="logo">
-        {{-- {{route('addrack',['hotel_id'=>$hotel->id]) }} --}}
-        <a href="" class="btn btn-dark fw-semibold">
-                        + Add Rack
-                    </a>
-        <!-- Centered rack boxes -->
-        <div class="rack-container mt-4">
-            
-            
-            @if ($racks->count())
-                @foreach ($racks as $rack)
-                    <a href="{{ route('rackinfo', ['hotel_id' => $hotel->id, 'buildingRId' => $building->building_r_id]) }}"
-                        class="rack-box text-decoration-none">
-                        Rack {{ $rack->rack_number }},{{ $building->building_r_id }}
-                    </a>
-                @endforeach
+
+                    @if ($racks->count())
+                        @foreach ($racks as $rack)
+                            <a href="{{ route('rackinfo', ['hotel_id' => $hotel->id, 'buildingRId' => $building->building_r_id]) }}"
+                                class="rack-box text-decoration-none">
+                                Rack {{ $rack->rack_number }},{{ $building->building_r_id }}
+                            </a>
+                        @endforeach
+                    @else
+                        <p class="text-gray-500 col-span-full">No Racks found.</p>
+                    @endif
+                </div>
+            </div>
             @else
-                <p class="text-gray-500 col-span-full">No Racks found.</p>
-            @endif
-        </div>
-    </div>
+            <div class="container text-center">
+                <!-- Left-aligned text block -->
+                <div class="text-start mb-3">
+                    <h4 class="mb-1">Welcome Back {{ Auth::user()->name ?? 'User' }}</h4>
+                    <h5 class="fw-bold">{{ $building->building_name }}</h5>
+                    
+                </div>
+                <!-- Centered logo -->
+                <img src="{{ asset($hotel->logo) }}" alt="{{ $hotel->name }}" class="logo">
+<!-- Centered rack boxes -->
+                <div class="rack-container mt-4">
 
-</body>
 
-</html>
+                    @if ($racks->count())
+                        @foreach ($racks as $rack)
+                            <a href="{{ route('rackinfo', ['hotel_id' => $hotel->id, 'buildingRId' => $building->building_r_id]) }}"
+                                class="rack-box text-decoration-none">
+                                Rack {{ $rack->rack_number }},{{ $building->building_r_id }}
+                            </a>
+                        @endforeach
+                    @else
+                        <p class="text-gray-500 col-span-full">No Racks found.</p>
+                    @endif
+                </div>
+            </div>
+             @endif
+    @endauth
+    </body>
+
+    </html>
