@@ -9,7 +9,7 @@ use App\Http\Controllers\HotelBuildingController;
 // gloable routs
 Route::get('/', function () {
     return view('login');
-});
+})->name('login');
 Route::post('/login', [UserController::class, 'login']);
 
 // admin routs
@@ -42,8 +42,11 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     
     Route::get('hotels/{hotel_id}/buildings/{name}/racks', [BuildingRackController::class, 'showRacks'])->name('racks');
     
-    // Route::get('hotels/{hotel_id}/addrack', [BuildingRackController::class, 'newRackForm'])->name('addrack');
-    // Route::post('/hotels/newRack', [BuildingRackController::class, 'StoreRack'])->name('storerack');
+    Route::get('hotels/{hotel_id}/addrack', [BuildingRackController::class, 'newRackForm'])->name('addrack');
+    Route::post('/hotels/newRack', [BuildingRackController::class, 'StoreRack'])->name('storerack');
+    
+    Route::get('hotels/{hotel_id}/addswitch', [BuildingRackController::class, 'newSwitchForm'])->name('addswitch');
+    Route::post('/hotels/newswitch', [BuildingRackController::class, 'StoreSwitch'])->name('storeswitch');
 
 
 });

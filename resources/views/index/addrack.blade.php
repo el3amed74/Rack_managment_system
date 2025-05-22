@@ -21,7 +21,7 @@
                 <div class="alert alert-danger">{{ session('error') }}</div>
             @endif
 
-            <form action="{{route('storerack')}}" method="POST">
+            <form action="{{ route('storerack') }}" method="POST">
                 @csrf <!-- Laravel CSRF token -->
                 @method('POST')
                 <div class="row">
@@ -31,12 +31,22 @@
 
                         <div class="mb-3">
                             <label class="form-label">Building Rack ID</label>
-                            <input type="text" name="building_r_id" class="form-control" placeholder="building_r_id">
+                            <select name="building_r_id" id="building_r_id" class="form-select" required>
+                                <option value="">-- Select a Building and Rack --</option>
+                                @foreach ($buildings as $building)
+                                    <option value="{{ $building->building_r_id }}">BName :{{$building->building_name}}: RackId {{ $building->building_r_id }}</option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Switch ID</label>
-                            <input type="text" name="switch_id" class="form-control" placeholder="switch_id">
+                            <select name="switch_id" id="switch_id" class="form-select" required>
+                                <option value="">-- Select a switch --</option>
+                                @foreach ($switches as $switche)
+                                    <option value="{{ $switche->id }}">{{$switche->serial_number}}</option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <div class="mb-3">
@@ -77,7 +87,7 @@
                     </div>
 
                     <!-- Switch Data Column -->
-                    <div class="col-md-6">
+                    {{-- <div class="col-md-6">
                         <h5 class="mb-3">Switch Data</h5>
 
                         <div class="mb-3">
@@ -122,12 +132,12 @@
                             <input type="text" name="model" class="form-control" placeholder="model">
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
-                <!-- Submit Button -->
-                <div class="text-center mt-4">
-                    <button type="submit" class="btn btn-primary px-5 py-2">Add Rack</button>
-                </div>
+                    <!-- Submit Button -->
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-primary px-5 py-2">Add Rack</button>
+                    </div>
             </form>
         </div>
     </div>

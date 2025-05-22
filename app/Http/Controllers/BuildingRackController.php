@@ -40,9 +40,10 @@ class BuildingRackController extends Controller
     }
 
     public function newRackForm()
-    {
-        $hotels = hotels::all(); // Get all hotels
-        return view('index.addrack', compact('hotels'));
+    {   $hotels = hotels::all();
+        $switches = switches::all(); // Get all hotels
+        $buildings = buldings::all();
+        return view('index.addrack', compact('switches','buildings'));
     }
 
     public function StoreRack(Request $request)
@@ -60,31 +61,9 @@ class BuildingRackController extends Controller
             'product_port' => 'nullable|string|max:255',
             'device_name' => 'nullable|string|max:255',
             'site_name' => 'nullable|string|max:255',
-
-            // Switch data
-            'switchname' => 'required|string|max:255',
-            'serial_number' => 'nullable|string|max:255',
-            'mac_add' => 'nullable|string|max:255',
-            'ip_add' => 'nullable|string|max:255',
-            'up_link_core1' => 'nullable|string|max:255',
-            'up_link_core2' => 'nullable|string|max:255',
-            'port_number' => 'nullable|string|max:255',
-            'model' => 'nullable|string|max:255',
         ]);
 
         try {
-            // Step 2: Create and store switch data
-            $switch = new switches();
-            $switch->name = $validated['switchname'];
-            $switch->serial_number = $validated['serial_number'] ?? null;
-            $switch->mac_add = $validated['mac_add'] ?? null;
-            $switch->ip_add = $validated['ip_add'] ?? null;
-            $switch->up_link_core1 = $validated['up_link_core1'] ?? null;
-            $switch->up_link_core2 = $validated['up_link_core2'] ?? null;
-            $switch->port_number = $validated['port_number'] ?? null;
-            $switch->model = $validated['model'] ?? null;
-            $switch->save();
-
             // Step 3: Create and store rack info data
             $rack = new Rack_info();
             $rack->building_r_id = $validated['building_r_id'];
@@ -98,10 +77,45 @@ class BuildingRackController extends Controller
             $rack->site_name = $validated['site_name'] ?? null;
             $rack->save();
 
-            return redirect()->back()->with('success', 'Rack and switch data added successfully.');
+            return redirect()->back()->with('success', 'Rack data added successfully.');
 
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to add rack data. Error: ' . $e->getMessage());
+        }
+    }
+
+
+    public function newSwitchForm(Request $request){
+        return view('index.addswitch');
+    }
+    public function StoreSwitch(Request $request){
+        $validated = $request->validate([
+            // Switch data
+            'switchname' => 'required|string|max:255',
+            'serial_number' => 'nullable|string|max:255',
+            'mac_add' => 'nullable|string|max:255',
+            'ip_add' => 'nullable|string|max:255',
+            'up_link_core1' => 'nullable|string|max:255',
+            'up_link_core2' => 'nullable|string|max:255',
+            'port_number' => 'nullable|string|max:255',
+            'model' => 'nullable|string|max:255',
+        ]);
+         try {
+        // Step 2: Create and store switch data
+            $switch = new switches();
+            $switch->name = $validated['switchname'];
+            $switch->serial_number = $validated['serial_number'] ?? null;
+            $switch->mac_add = $validated['mac_add'] ?? null;
+            $switch->ip_add = $validated['ip_add'] ?? null;
+            $switch->up_link_core1 = $validated['up_link_core1'] ?? null;
+            $switch->up_link_core2 = $validated['up_link_core2'] ?? null;
+            $switch->port_number = $validated['port_number'] ?? null;
+            $switch->model = $validated['model'] ?? null;
+            $switch->save();
+              return redirect()->back()->with('success', ' switch data added successfully.');
+
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to add switch data. Error: ' . $e->getMessage());
         }
     }
 
